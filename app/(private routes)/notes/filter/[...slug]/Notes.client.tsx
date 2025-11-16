@@ -13,15 +13,15 @@ import Error from "./error";
 import Loading from "@/app/loading";
 import Link from "next/link";
 interface NotesClientProps {
-  category: string | undefined;
+  tag: string | undefined;
 }
-export default function NotesClient({ category }: NotesClientProps) {
+export default function NotesClient({ tag }: NotesClientProps) {
   const [page, setPage] = useState(1);
   const [topic, setTopic] = useState("");
 
   const { data, isLoading, isError, isSuccess, error } = useQuery({
-    queryKey: ["notes", { search: topic, tag: category, page: page }],
-    queryFn: () => fetchNotes(topic, page, category),
+    queryKey: ["notes", { search: topic, tag: tag, page: page }],
+    queryFn: () => fetchNotes(topic, tag, page),
     placeholderData: keepPreviousData,
     refetchOnMount: false,
   });

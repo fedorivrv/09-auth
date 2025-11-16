@@ -4,8 +4,8 @@ import { RegisterLoginData, User } from "@/types/user";
 
 export const fetchNotes = async (
   topic: string,
-  page: number,
-  tag?: string
+  tag: string | undefined,
+  page: number
 ): Promise<{ notes: Note[]; totalPages: number }> => {
   const response = await nextServer.get<NotesHttpResponse>("/notes", {
     params: {
@@ -15,6 +15,7 @@ export const fetchNotes = async (
       page,
     },
   });
+
   return {
     notes: response.data.notes,
     totalPages: response.data.totalPages,

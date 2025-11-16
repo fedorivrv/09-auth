@@ -29,7 +29,7 @@ export default function EditProfile() {
   }, []);
 
   const handleCancel = () => {
-    router.push("/profile");
+    router.back();
   };
   const [error, setError] = useState<string | null>(null);
   const handleSubmit = async (formData: FormData) => {
