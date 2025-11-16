@@ -15,8 +15,8 @@ export const getMe = async () => {
 
 export const fetchNotes = async (
   topic: string,
-  page: number,
-  tag?: string
+  tag: string | undefined,
+  page: number
 ): Promise<{ notes: Note[]; totalPages: number }> => {
   const cookieStore = await cookies();
   const response = await nextServer.get<NotesHttpResponse>("/notes", {
@@ -30,6 +30,7 @@ export const fetchNotes = async (
       Cookie: cookieStore.toString(),
     },
   });
+
   return {
     notes: response.data.notes,
     totalPages: response.data.totalPages,

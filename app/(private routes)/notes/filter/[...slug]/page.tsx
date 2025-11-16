@@ -20,20 +20,18 @@ export async function generateMetadata({
   const { slug } = await params;
 
   const slugArr = slug ?? ["all"];
-  const rawCategory = slugArr[0] ?? "all";
+  const rawTag = slugArr[0] ?? "all";
 
-  const category =
-    rawCategory === "all" || rawCategory === "" ? "All notes" : rawCategory;
+  const tagLabel = rawTag === "all" || rawTag === "" ? "All notes" : rawTag;
 
-  const title =
-    category === "All notes" ? "Notes — All" : `Notes — ${category}`;
+  const title = tagLabel === "All notes" ? "Notes — All" : `Notes — ${tagLabel}`;
 
   const description =
-    category === "All notes"
+    tagLabel === "All notes"
       ? "Browse all notes."
-      : `Notes filtered by "${category}".`;
+      : `Notes filtered by "${tagLabel}".`;
 
-  const url = `${SITE_URL}notes/${rawCategory}`;
+  const url = `${SITE_URL}notes/${rawTag}`;
 
   return {
     title,
@@ -59,16 +57,18 @@ export default async function NotePage({ params }: NotePageProps) {
   const { slug } = await params;
 
   const queryClient = new QueryClient();
-  const category = slug[0] === "all" ? undefined : slug[0];
+
+
+  const tag = slug[0] === "all" ? undefined : slug[0];
 
   await queryClient.prefetchQuery({
-    queryKey: ["notes", { search: "", tag: category, page: 1 }],
-    queryFn: () => fetchNotes("", 1, category),
+    queryKey: ["notes", { search: "", tag, page: 1 }],
+    queryFn: () => fetchNotes("", tag, 1), 
   });
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <NotesClient category={category} />
+      <NotesClient tag={tag} /> 
     </HydrationBoundary>
   );
 }
